@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Date with Sayang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+
+/* Layout: one hand-delivered love letter on a strawberry-milk table; single committed look */
+:root{
+  --table:#ffe3ea;
+  --paper:#fffaf6;
+  --ink:#4a2a36;
+  --muted:#9b7380;
+  --rose:#ec4f7c;
+  --rose-deep:#c93462;
+  --blush:#ffd0dc;
+  --mint:#cdeee0;
+  --display:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+  --hand:"Caveat","Comic Sans MS",cursive;
+  --body:"Nunito",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{
+  background:var(--table);
+  background-image:radial-gradient(var(--blush) 1.6px,transparent 1.7px);
+  background-size:22px 22px;
+  color:var(--ink);font-family:var(--body);
+  display:flex;align-items:center;justify-content:center;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:24px;box-sizing:border-box;overflow-x:hidden;
+}
+.letter{
+  position:relative;width:100%;max-width:420px;
+  background:var(--paper);border-radius:22px;
+  box-shadow:0 2px 0 var(--blush),0 18px 40px -18px rgba(201,52,98,.45);
+  padding:34px 26px 28px;text-align:center;
+}
+.tape{position:absolute;top:-12px;left:50%;width:110px;height:26px;
+  transform:translateX(-50%) rotate(-3deg);background:var(--mint);opacity:.85;border-radius:3px}
+.stamp{position:absolute;top:16px;right:16px;font-family:var(--display);font-weight:600;
+  font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--rose);
+  border:2px dashed var(--rose);border-radius:8px;padding:5px 7px;transform:rotate(6deg);line-height:1.15}
+.stamp b{display:block;font-size:1rem;letter-spacing:0}
+.to{font-family:var(--hand);font-size:1.6rem;color:var(--muted);margin:6px 0 2px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,6.5vw,2.2rem);
+  line-height:1.15;margin:0 0 10px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--rose)}
+.sub{color:var(--muted);margin:0 auto 4px;max-width:30ch;line-height:1.5}
+.when{display:inline-flex;gap:8px;align-items:center;margin:14px 0 6px;
+  background:var(--blush);color:var(--rose-deep);font-weight:700;border-radius:999px;padding:7px 14px;font-size:.95rem}
+.face{font-size:3.4rem;line-height:1;margin:10px 0 2px;transition:transform .2s}
+.stage{position:relative;height:150px;margin-top:8px}
+button{font-family:var(--display);font-weight:600;border:0;cursor:pointer;border-radius:999px;
+  transition:transform .25s ease,background .2s,left .35s cubic-bezier(.3,1.4,.5,1),top .35s cubic-bezier(.3,1.4,.5,1),font-size .25s,padding .25s}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#yes{position:absolute;left:18%;top:50%;transform:translate(-50%,-50%);
+  background:var(--rose);color:#fff;font-size:1.15rem;padding:12px 28px;
+  box-shadow:0 5px 0 var(--rose-deep);z-index:2}
+#yes:hover{background:var(--rose-deep)}
+#yes:active{transform:translate(-50%,calc(-50% + 3px));box-shadow:0 2px 0 var(--rose-deep)}
+#no{position:absolute;left:78%;top:50%;transform:translate(-50%,-50%);
+  background:#fff;color:var(--muted);border:2px solid var(--blush);font-size:1.05rem;padding:10px 24px;z-index:3;white-space:nowrap}
+#no.turned{background:var(--rose);color:#fff;border-color:var(--rose);box-shadow:0 5px 0 var(--rose-deep)}
+.plea{font-family:var(--hand);font-size:1.45rem;color:var(--rose);min-height:1.6em;margin:4px 0 0}
+
+/* accepted view */
+.done h1{margin-top:4px}
+.plan{list-style:none;padding:0;margin:18px 0 6px;text-align:left;display:grid;gap:0;counter-reset:s}
+.plan li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;
+  padding:9px 0;border-bottom:1.5px dashed var(--blush)}
+.plan li:last-child{border-bottom:0}
+.plan li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--blush);
+  color:var(--rose-deep);font-family:var(--display);font-weight:700;font-size:.85rem;
+  display:grid;place-items:center}
+.plan strong{font-family:var(--display);font-weight:600;display:block;font-size:1rem}
+.plan span{color:var(--muted);font-size:.88rem}
+.sign{font-family:var(--hand);font-size:1.7rem;color:var(--rose);margin:14px 0 0}
+.again{margin-top:14px;background:transparent;color:var(--muted);font-size:.85rem;padding:6px 12px;text-decoration:underline}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:50}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.done{animation:pop .5s ease}
+@keyframes popin{0%{transform:scale(.5) translateY(6px);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.plea.popin{animation:popin .35s ease}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.face.shake{animation:wobble .35s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<canvas id="fx"></canvas>
+
+<main class="letter" id="ask">
+  <div class="tape" aria-hidden="true"></div>
+  <div class="stamp" aria-hidden="true">Thu<b>29.10</b>2026</div>
+  <p class="to">to my sayang,</p>
+  <div class="face" id="face" aria-hidden="true">🥺</div>
+  <h1>Will you go on a <em>date</em> with me?</h1>
+  <p class="sub">Maggi, a movie, photobooth, Sri Semporna, and cake. I've planned the whole day.</p>
+  <div class="when">Thursday · 29 Oct 2026</div>
+  <div class="stage" id="stage">
+    <button id="yes" type="button">Yes!</button>
+    <button id="no" type="button">No</button>
+  </div>
+  <p class="plea" id="plea" aria-live="polite"></p>
+</main>
+
+<main class="letter done" id="done" hidden>
+  <div class="tape" aria-hidden="true"></div>
+  <div class="face" aria-hidden="true">🥰</div>
+  <h1>Yay! It's a <em>date</em></h1>
+  <div class="when">Thursday · 29 Oct 2026</div>
+  <ol class="plan">
+    <li><div><strong>Pickup</strong><span>I'll fetch you at the MRT</span></div></li>
+    <li><div><strong>Quick lunch</strong><span>Maggi for you, burger for me</span></div></li>
+    <li><div><strong>Movies</strong><span>Kudrat 1968</span></div></li>
+    <li><div><strong>Photobooth</strong><span>Strips to keep</span></div></li>
+    <li><div><strong>Short groceries</strong><span>In and out, promise</span></div></li>
+    <li><div><strong>Dinner</strong><span>Sri Semporna</span></div></li>
+    <li><div><strong>Coffee &amp; cakes</strong><span>CBTL and Secret Recipe 👉🏻👈🏻</span></div></li>
+    <li><div><strong>Balik</strong><span>Home, safe and full</span></div></li>
+  </ol>
+  <p class="sign">see you Thursday, sayang</p>
+  <button class="again" id="again" type="button">Ask me again</button>
+</main>
+
+<script>
+const yes=document.getElementById('yes'),no=document.getElementById('no'),
+  stage=document.getElementById('stage'),plea=document.getElementById('plea'),
+  face=document.getElementById('face'),ask=document.getElementById('ask'),done=document.getElementById('done');
+const lines=["Are you sure? 😳","Think again sayang…","Pleaseee 🥺","Maggi is on me!","But… Kudrat 1968?","Secret Recipe cakes tho 🍰","Wrong button, baby","I'll hold your hand during the scary parts","Photobooth with meee 📸","You can't catch it hehe","Just press Yes 💗","I'll be sad… 😭"];
+const faces=["😳","🥹","🥺","😋","👀","🤤","😤","🫣","🤭","😜","🥰","😭"];
+let tries=0,yesScale=1;
+
+function dodge(){
+  tries++;
+  const i=(tries-1)%lines.length;
+  plea.textContent=lines[i];
+  plea.classList.remove('popin');void plea.offsetWidth;plea.classList.add('popin');
+  face.textContent=faces[i];
+  face.classList.remove('shake');void face.offsetWidth;face.classList.add('shake');
+  yesScale=Math.min(1+tries*0.14,1.8);
+  yes.style.transform=`translate(-50%,-50%) scale(${yesScale})`;
+  const w=stage.clientWidth,h=stage.clientHeight,bw=no.offsetWidth,bh=no.offsetHeight;
+  let x,y,guard=0;
+  do{
+    x=bw/2+Math.random()*(w-bw);
+    y=bh/2+Math.random()*(h-bh);
+    guard++;
+  }while(guard<20 && Math.abs(x-yes.offsetLeft)<bw*1.1 && Math.abs(y-yes.offsetTop)<bh*1.4);
+  no.style.left=x+'px';no.style.top=y+'px';
+}
+no.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')dodge()});
+no.addEventListener('click',e=>{
+  e.preventDefault();dodge();
+});
+yes.addEventListener('click',accept);
+
+function accept(){
+  ask.hidden=true;done.hidden=false;burst();
+}
+document.getElementById('again').addEventListener('click',()=>{
+  tries=0;
+  no.style.left='78%';no.style.top='50%';yes.style.transform='';
+  plea.textContent='';face.textContent='🥺';
+  done.hidden=true;ask.hidden=false;
+});
+
+// hearts burst
+const cv=document.getElementById('fx'),ctx=cv.getContext('2d');
+function size(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+size();addEventListener('resize',size);
+let parts=[],raf;
+function heart(x,y,s,c){ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(x,y+s*.3);
+  ctx.bezierCurveTo(x,y,x-s*.5,y,x-s*.5,y+s*.3);ctx.bezierCurveTo(x-s*.5,y+s*.6,x,y+s*.8,x,y+s);
+  ctx.bezierCurveTo(x,y+s*.8,x+s*.5,y+s*.6,x+s*.5,y+s*.3);ctx.bezierCurveTo(x+s*.5,y,x,y,x,y+s*.3);ctx.fill()}
+function burst(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cols=['#ec4f7c','#ff8fab','#ffc2d1','#c93462','#cdeee0'];
+  for(let i=0;i<90;i++)parts.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*12,vy:-Math.random()*12-3,
+    s:8+Math.random()*14,c:cols[i%cols.length],life:120+Math.random()*60});
+  cancelAnimationFrame(raf);tick();
+}
+function tick(){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  parts.forEach(p=>{p.vy+=.25;p.x+=p.vx;p.y+=p.vy;p.life--;ctx.globalAlpha=Math.max(p.life/120,0);heart(p.x,p.y,p.s,p.c)});
+  ctx.globalAlpha=1;parts=parts.filter(p=>p.life>0&&p.y<innerHeight+40);
+  if(parts.length)raf=requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>
